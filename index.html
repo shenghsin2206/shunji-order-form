@@ -1,0 +1,61 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>順記良品訂購網</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background-color: #fffde7; }
+    h1 { color: #d2691e; }
+    label { display: block; margin-top: 15px; }
+    input, textarea, select, button { width: 300px; padding: 8px; margin-top: 5px; }
+    button { background-color: #ffa726; color: white; border: none; cursor: pointer; }
+    button:hover { background-color: #fb8c00; }
+  </style>
+</head>
+<body>
+  <h1>順記良品訂購網</h1>
+  <form id="orderForm">
+    <label>姓名：<input type="text" id="name" required></label>
+    <label>電話：<input type="text" id="phone" required></label>
+    <label>地址：<textarea id="address" required></textarea></label>
+    <label>購買品項：
+      <select id="item" required>
+        <option value="">請選擇</option>
+        <option value="金煌" disabled>金煌（尚未開放）</option>
+        <option value="愛文" disabled>愛文（尚未開放）</option>
+        <option value="玉文">玉文</option>
+      </select>
+    </label>
+    <label>規格：
+      <select id="spec" required>
+        <option value="">請選擇</option>
+        <option value="10斤（大果6～9顆）">10斤（大果6～9顆）</option>
+        <option value="5斤（中果5～8顆）">5斤（中果5～8顆）</option>
+      </select>
+    </label>
+    <label>數量：
+      <select id="quantity" required>
+<option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option>
+        <option value="其他">其他（請填寫）</option>
+      </select>
+    </label>
+    <label>其他數量（如有）：<input type="text" id="other_quantity"></label>
+    <button type="submit">下一步</button>
+  </form>
+
+  <script>
+    document.getElementById("orderForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      sessionStorage.setItem("姓名", document.getElementById("name").value);
+      sessionStorage.setItem("電話", document.getElementById("phone").value);
+      sessionStorage.setItem("地址", document.getElementById("address").value);
+      sessionStorage.setItem("購買品項", document.getElementById("item").value);
+      sessionStorage.setItem("規格", document.getElementById("spec").value);
+      sessionStorage.setItem("訂購數量", document.getElementById("quantity").value);
+      sessionStorage.setItem("其他數量", document.getElementById("other_quantity").value);
+      window.location.href = "confirm_page.html";
+    });
+  </script>
+</body>
+</html>

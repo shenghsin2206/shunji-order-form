@@ -1,0 +1,93 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>訂單確認</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background-color: #fff3e0; }
+    h1 { color: #e65100; }
+    .data-box { background: #ffffff; border: 1px solid #ccc; padding: 15px; margin: 10px 0; border-radius: 5px; }
+    button { margin: 10px 5px; padding: 10px 20px; font-size: 16px; border: none; cursor: pointer; border-radius: 5px; }
+    .confirm { background-color: #43a047; color: white; }
+    .back { background-color: #eeeeee; color: black; }
+  </style>
+</head>
+<body>
+
+<h1>請確認您的訂購資訊</h1>
+
+<div class="data-box">
+  <p><strong>姓名：</strong><span id="c_name"></span></p>
+  <p><strong>電話：</strong><span id="c_phone"></span></p>
+  <p><strong>地址：</strong><span id="c_address"></span></p>
+  <p><strong>購買品項：</strong><span id="c_item"></span></p>
+  <p><strong>規格：</strong><span id="c_spec"></span></p>
+  <p><strong>數量：</strong><span id="c_quantity"></span></p>
+  <p><strong>其他數量：</strong><span id="c_other_quantity"></span></p>
+  <p><strong>總金額：</strong><span id="c_total"></span> 元</p>
+</div>
+
+<button class="back" onclick="history.back()">回到上一頁</button>
+<button class="confirm" onclick="goToSuccess()">確認無誤並送出</button>
+
+<script>
+  const get = key => sessionStorage.getItem(key) || "";
+  const pad = n => n.toString().padStart(2, '0');
+
+  const now = new Date();
+  const timeStr = now.getFullYear() + "年" +
+                  pad(now.getMonth() + 1) + "月" +
+                  pad(now.getDate()) + "日 " +
+                  pad(now.getHours()) + ":" +
+                  pad(now.getMinutes());
+
+  const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  let orderId = '';
+  for (let i = 0; i < 3; i++) {
+    orderId += letters[Math.floor(Math.random() * 26)];
+  }
+  for (let i = 0; i < 5; i++) {
+    orderId += Math.floor(Math.random() * 9 + 1);
+  }
+
+  const fields = {
+    "姓名": "c_name",
+    "電話": "c_phone",
+    "地址": "c_address",
+    "購買品項": "c_item",
+    "規格": "c_spec",
+    "訂購數量": "c_quantity",
+    "其他數量": "c_other_quantity"
+  };
+
+  let hasError = false;
+  for (let key in fields) {
+    const value = get(key);
+    const span = document.getElementById(fields[key]);
+    span.textContent = value;
+    if (key !== "其他數量" && value.trim() === "") {
+      span.style.color = "red";
+      span.textContent = "（此欄未填）";
+      hasError = true;
+    }
+  }
+
+  const qty = parseInt(get("訂購數量")) || 0;
+  const total = qty * 1200;
+  document.getElementById("c_total").textContent = total;
+  sessionStorage.setItem("總金額", total);
+  sessionStorage.setItem("訂購時間", timeStr);
+  sessionStorage.setItem("訂單編號", orderId);
+
+  function goToSuccess() {
+    if (hasError) {
+      alert("請檢查欄位是否有遺漏（紅色標示處），請回上一頁補填！");
+      return;
+    }
+    window.location.href = "success_page.html";
+  }
+</script>
+
+</body>
+</html>

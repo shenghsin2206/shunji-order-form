@@ -1,0 +1,55 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>訂購完成</title>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; padding: 50px; background-color: #e8f5e9; }
+    h1 { color: #43a047; }
+    p { font-size: 18px; }
+    .highlight { color: #2e7d32; font-weight: bold; }
+  </style>
+</head>
+<body>
+<h1>感謝您的訂購！</h1>
+<p>請將款項匯至以下帳戶：</p>
+<p class="highlight">銀行：123銀行<br>帳號：123-456-789012<br>戶名：順記良品有限公司</p>
+<hr>
+<p><strong>總金額：</strong><span id="final_amount"></span> 元</p>
+<p><strong>訂購時間：</strong><span id="order_time"></span></p>
+<p><strong>訂單編號：</strong><span id="order_id"></span></p>
+
+<script>
+  const get = key => sessionStorage.getItem(key) || "";
+
+  document.getElementById("final_amount").textContent = get("總金額");
+  document.getElementById("order_time").textContent = get("訂購時間");
+  document.getElementById("order_id").textContent = get("訂單編號");
+
+  const payload = {
+    "姓名": get("姓名"),
+    "電話": get("電話"),
+    "地址": get("地址"),
+    "購買品項": get("購買品項"),
+    "規格": get("規格"),
+    "訂購數量": get("訂購數量"),
+    "其他數量": get("其他數量"),
+    "總金額": get("總金額"),
+    "訂購時間": get("訂購時間"),
+    "訂單編號": get("訂單編號")
+  };
+
+  fetch("https://script.google.com/macros/s/AKfycbyKhVNBF4QxHw0cR_Mg780Jqi4FwBpoIQHCHZHA6cenHb8PkC-yeZYGvlBx249y5vAngw/exec", {
+    method: "POST",
+    body: JSON.stringify(payload),
+    headers: { "Content-Type": "application/json" }
+  }).then(res => {
+    if (!res.ok) console.error("送出失敗", res.statusText);
+  }).catch(err => {
+    console.error("送出錯誤", err);
+  });
+</script>
+
+</body>
+</html>
